@@ -15,4 +15,21 @@ bot.onText(/\/start/, (msg) => {
         "Surprice Shorty");
 });
 
+bot.onText(/\/Quién es (.+)?/, (msg, match) => {
+    console.log(match);
+    const who = match[1];
+    res = "";
+    switch (who) {
+        case 'Samayoa?':
+            res = "El panzas."
+            break;
+
+        default:
+            res = who.toLocaleUpperCase();
+            break;
+    }
+    bot.sendMessage(msg.chat.id,
+        res);
+});
+
 
