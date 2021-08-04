@@ -1,18 +1,16 @@
-// imports the node package for us
-const TelegramBot = require('node-telegram-bot-api');
+// colors :p
+const colors = require('colors');
 
-// grabs the environment variable
-const token = '1776355209:AAGWMFNpkZf0zOlVM6G2y84Hu6T07MtRAO8';
+// Server configuration, cors and express. 
+const app = require('./config/server');
 
-// starts a new Telegram bot instance that "polls" for updates
-const bot = new TelegramBot(token, { polling: true });
 
-// we're using the API's in-built "onText" method
-// it takes in a regex and the message
-bot.onText(/\/start/, (msg) => {
-    // listens for "/start" and responds with the greeting below.
-    bot.sendMessage(msg.chat.id,
-        "Surprice Shorty");
+require('./app/bot')(app);
+
+// Server connection 
+app.listen(app.get('port'), () => {
+    console.log('');
+    console.log('📶 Server connection:'.bold.underline);
+    console.log('Server running on port #️⃣  '.green + `${app.get('port')}`.black.bgGreen + '\n');
 });
-
 
