@@ -13,4 +13,3 @@ app.listen(app.get('port'), () => {
     console.log('📶 Server connection:'.bold.underline);
     console.log('Server running on port #️⃣  '.green + `${app.get('port')}`.black.bgGreen + '\n');
 });
-

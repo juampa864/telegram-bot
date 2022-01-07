@@ -1,10 +1,11 @@
-// import questions from '../data/questions';
+const dotenv = require('dotenv');
+dotenv.config();
 
 // imports the node package for us
 const TelegramBot = require('node-telegram-bot-api');
 
 // grabs the environment variable
-const token = '1776355209:AAGWMFNpkZf0zOlVM6G2y84Hu6T07MtRAO8';
+const token = process.env.TeleToken;
 
 // starts a new Telegram bot instance that "polls" for updates
 // const bot = new TelegramBot(token, { polling: true });
@@ -13,35 +14,7 @@ const token = '1776355209:AAGWMFNpkZf0zOlVM6G2y84Hu6T07MtRAO8';
 const bot = {};
 bot.bot = new TelegramBot(token, { polling: true });;
 bot.user = 759126271;
+bot.user2 = 1535366437;
+bot.temp = 0;
 
 module.exports = bot;
-
-// we're using the API's in-built "onText" method
-// it takes in a regex and the message
-// bot.onText(/\/start/, (msg) => {
-//     // listens for "/start" and responds with the greeting below.
-//     console.log(msg);
-//     bot.sendMessage(msg.chat.id,
-//         "Surprice Shorty");
-// });
-// 
-// 
-// 
-// bot.onText(/\/Quién es (.+)?/, (msg, match) => {
-//     console.log(match);
-//     const who = match[1];
-//     res = "";
-//     switch (who) {
-//         case 'Samayoa?':
-//             res = "El panzas."
-//             break;
-// 
-//         default:
-//             res = who.toLocaleUpperCase();
-//             break;
-//     }
-//     bot.sendMessage(msg.chat.id,
-//         res);
-// });
-
-
