@@ -1,116 +1,61 @@
-const bot = require('../config/bot-config');
+// Imports the basic configuration of the bot.
+const bot_object = require('../config/bot-config');
 
 
 module.exports = (app) => {
+
+    // GET request from the server.
+    // Example: If the server receives a GET request, the bot will send a message and a dice to the user with ID stored in bot_object.user_id.
     app.get('/dice', (req, res) => {
-        bot.bot.sendMessage(bot.user2, "Here is a dice ༼ つ ◕_◕ ༽つ");
+        bot_object.bot.sendMessage(bot_object.user_id, "Here is a dice ༼ つ ◕_◕ ༽つ");
         res.status(200).json({
             message: 'Telegram Bot Server Responded.',
         });
-        bot.bot.sendDice(bot.user2);
+        bot_object.bot.sendDice(bot_object.user_id);
     });
 
-    bot.bot.onText(/\/start/, (msg) => {
-        bot.temp = msg.chat.id;
-        const opts = {
-            reply_to_message_id: msg.message_id,
-            reply_markup: JSON.stringify({
-                keyboard: [
-                    ['Asociar Usuario de Telegram a Athenea Academy.'],
-                    ['Cambiar Usuario de Telegram dentro de Athenea Academy.']
-                    // ['No, sorry there is another one...'],
-                    // ['I\'m not into you...'],
-
+    // Basic message handling with options send back to the user.
+    // When the user sends /start command the bot responds with the options listed bellow.
+    bot_object.bot.onText(/\/start/, (msg) => {
+        // This allows us to see the information of the message, containing all the data from the user and the message itself.
+        // console.log(msg);
+        opts = {
+            // reply_to_message_id: msg.message_id,
+            "reply_markup": {
+                "keyboard": [
+                    ['Quiero un dado'],
+                    ['Quiero ver un perrito'],
+                    ['Quiero ver un gatito'],
+                    ['Quiero ver la información de la respuesta']
                 ]
-            })
+            }
         };
-        bot.bot.sendMessage(msg.chat.id, '¡Hola! ¿Qué quieres hacer? 🦉', opts);
+        // Listens for "/start" and responds with the greeting below, it also gives the user two options.
+        bot_object.bot.sendMessage(msg.chat.id, '¡Hola ' + msg.from.first_name + '! ¿Qué quieres hacer?', opts);
     });
 
-    bot.bot.onText(/Asociar Usuario de Telegram a Athenea Academy./, (msg) => {
-        // listens for "/start" and responds with the greeting below.
+    // Sends a dice to the user
+    bot_object.bot.onText(/Quiero un dado/, (msg) => {
+        bot_object.bot.sendDice(msg.from.id);
+    });
+
+    // Sends an image to the user
+    bot_object.bot.onText(/Quiero ver un perrito/, (msg) => {
+        bot_object.bot.sendPhoto(msg.chat.id, "https://unsplash.com/photos/golden-retriever-puppy-lying-on-floor-aPvB8KMIh5w", {caption : '🐶'});
+    });
+
+    // Sends an image to the user
+    bot_object.bot.onText(/Quiero ver un gatito/, (msg) => {
+        bot_object.bot.sendPhoto(msg.chat.id, "src/img/cat.jpg");
+    });
+
+    // Returns the message information
+    bot_object.bot.onText(/Quiero ver la información de la respuesta/, (msg) => {
         console.log(msg);
-        // bot.temp = msg.chat.id;
-        bot.bot.sendMessage(msg.chat.id,
-            "Ingresa tu nombre de usuario en Athenea Academy 🦉");
-        bot.bot.sendMessage(msg.chat.id,
-            "Por favor ingresalo de la siguiente manera '/add user_name'");
+        bot_object.bot.sendMessage(msg.chat.id, '<code>'+JSON.stringify(msg)+'</code>', {parse_mode: 'HTML'});
     });
 
-    bot.bot.onText(/\add (.+)/, (msg, match) => {
-        const user = match[1];
-        bot.bot.sendMessage(msg.chat.id,
-            "Usuario agregado correctamente 🦉");
+    bot_object.bot.on('polling_error', (error) => {
+        console.log(`[polling_error] ${error.code}: ${error.message}`);
     });
-
-    // // Matches /love
-    // bot.bot.onText(/\/love/, function onLoveText(msg) {
-    //     const opts = {
-    //         reply_to_message_id: msg.message_id,
-    //         // reply_markup: JSON.stringify({
-    //         //     keyboard: [
-    //         //         ['Yes, you are the bot of my life ❤'],
-    //         //         // ['No, sorry there is another one...'],
-    //         //         // ['I\'m not into you...'],
-
-    //         //     ]
-    //         // })
-    //     };
-    //     bot.bot.sendMessage(msg.chat.id, 'Do you love me?', opts);
-    // });
-
-    // // Matches /editable
-    // bot.bot.onText(/\/editable/, function onEditableText(msg) {
-    //     const opts = {
-    //         reply_markup: {
-    //             inline_keyboard: [
-    //                 [
-    //                     {
-    //                         text: 'Edit Text',
-    //                         // we shall check for this value when we listen
-    //                         // for "callback_query"
-    //                         callback_data: 'edit'
-    //                     }
-    //                 ]
-    //             ]
-    //         }
-    //     };
-    //     bot.bot.sendMessage(msg.from.id, 'Original Text', opts);
-    // });
-
-
-    // // Handle callback queries
-    // bot.bot.on('callback_query', function onCallbackQuery(callbackQuery) {
-    //     const action = callbackQuery.data;
-    //     const msg = callbackQuery.message;
-    //     const opts = {
-    //         chat_id: msg.chat.id,
-    //         message_id: msg.message_id,
-    //     };
-    //     let text;
-
-    //     if (action === 'edit') {
-    //         text = 'lol';
-    //     }
-
-    //     bot.bot.editMessageText(text, opts);
-    // });
-
-    // bot.bot.onText(/\/save me/, (msg) => {
-    //     // listens for "/start" and responds with the greeting below.
-    //     console.log(msg);
-    //     bot.temp = msg.chat.id;
-    //     bot.bot.sendMessage(msg.chat.id,
-    //         "You have been saved.");
-    // });
-
-    // bot.bot.onText(/\/add/, (msg) => {
-    //     // listens for "/start" and responds with the greeting below.
-    //     console.log(msg);
-    //     bot.temp = msg.chat.id;
-    //     bot.bot.sendMessage(msg.chat.id,
-    //         "Hello 😃");
-    // });
-
-
 }
