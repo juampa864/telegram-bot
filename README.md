@@ -10,7 +10,7 @@ npm
 We also need to install some dependencies.
 
 ```
-npm install cors dotenv express colors
+npm install cors dotenv express colors node-telegram-bot-api
 ```
 
 It is recommended to install Nodemon to make the development process easier.
