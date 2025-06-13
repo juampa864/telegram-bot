@@ -1,20 +1,14 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
-// imports the node package for us
+// This module is a middleware to facilitate the implementation of Telegram bots.
 const TelegramBot = require('node-telegram-bot-api');
 
-// grabs the environment variable
-const token = process.env.TeleToken;
+// Grabs the token from the .env file, stored in the process.env variable.
+const token = process.env.bot_token;
 
-// starts a new Telegram bot instance that "polls" for updates
-// const bot = new TelegramBot(token, { polling: true });
-// const user = 759126271;
 
-const bot = {};
-bot.bot = new TelegramBot(token, { polling: true });;
-bot.user = 759126271;
-bot.user2 = 1535366437;
-bot.temp = 0;
+// Starts a new Telegram bot instance that "polls" for updates
+const bot_object = {};
+bot_object.bot = new TelegramBot(token, { polling: true });;
+bot_object.user_id = process.env.jp_user_id;
+bot_object.temp = 0;
 
-module.exports = bot;
+module.exports = bot_object;
